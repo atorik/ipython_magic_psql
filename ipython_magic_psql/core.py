@@ -40,15 +40,15 @@ class PsqlMagics(Magics):
     @cell_magic('psql')
     def exec_cell(self, con_info, cell):
 
-        first_con = re.search('con_name:(\w+) user:(\w+) port:(\w+)', con_info)
+        first_con = re.search('con_name:(\w+) db:(\w+) port:(\w+)', con_info)
 
         if first_con:
             con_name = first_con.group(1)
-            user = first_con.group(2)
+            dbname = first_con.group(2)
             port = first_con.group(3)
 
             if not con_name in self.cons.keys():
-                self.cons[con_name] = PsqlWrapper(port, user)
+                self.cons[con_name] = PsqlWrapper(port, dbname)
 
             result = self.cons[con_name].exec_query(cell)
 
